@@ -3,25 +3,28 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// One-time password hash generation (do this ONCE)
-const hashedAdminPassword = bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10);
+// Ensure a valid password is used
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'defaultSecurePassword';
+const saltRounds = 10;
+
+// Pre-hash the password
+const hashedPassword = bcrypt.hashSync(ADMIN_PASSWORD, saltRounds);
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Validate username
     if (username !== process.env.ADMIN_USERNAME) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Secure password comparison
-    const isMatch = await bcrypt.compare(password, hashedAdminPassword);
+    // Compare passwords
+    const isMatch = bcrypt.compareSync(password, hashedPassword);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Generate secure JWT token
+    // Generate token
     const token = jwt.sign(
       { user: { id: username } }, 
       process.env.JWT_SECRET, 
