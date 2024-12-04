@@ -4,7 +4,7 @@ const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const authRoute = require('./routes/authRoute');
+const authRoute = require('./routes/authRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
