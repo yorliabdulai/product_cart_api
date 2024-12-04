@@ -7,12 +7,14 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const { errorHandler } = require('./middlewares/errorHandler');
+const rateLimiter = require('./middlewares/rateLimiter');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(rateLimiter);
 
 // Connect Database
 connectDB();
