@@ -21,6 +21,22 @@ exports.getProductById = async (req, res, next) => {
   }
 };
 
+// Get all products with search and filtering
+exports.getProducts = async (req, res, next) => {
+  try {
+    const { category, search } = req.query;
+    const query = {};
+
+    if (category) query.category = category;
+    if (search) query.name = { $regex: search, $options: 'i' };
+
+    const products = await Product.find(query);
+    res.status(200).json(products);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.createProduct = async (req, res, next) => {
   try {
     const product = new Product(req.body);
