@@ -1,5 +1,5 @@
 const express = require('express');
-const connectDB = require('./config/database');
+const connectDB = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const swaggerUi = require('swagger-ui-express');
